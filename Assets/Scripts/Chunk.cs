@@ -181,8 +181,21 @@ public class Chunk
 							chunkData[x,y,z] = new Block(Block.BlockType.GRASS, pos, 
 						                chunk.gameObject, this);
 					}
+                    //Place flower blocks(for test use diamond instead)
+                    else if (worldY == surfaceHeight + 1)
+                    {
+                        if (Utils.fBM3D(worldX, worldY, worldZ, 0.4f, 2) < 0.4f)
+                        {
+                            chunkData[x, y, z] = new Block(Block.BlockType.DIAMOND, pos, chunk.gameObject, this);
+                        }
+                        else
+                        {
+                            chunkData[x, y, z] = new Block(Block.BlockType.AIR, pos,
+                                        chunk.gameObject, this);
+                        }
+                    }
                     // Place dirt blocks
-					else if(worldY < surfaceHeight)
+                    else if(worldY < surfaceHeight)
 						chunkData[x,y,z] = new Block(Block.BlockType.DIRT, pos, 
 						                chunk.gameObject, this);
                     // Place water blocks below height 65
@@ -190,14 +203,17 @@ public class Chunk
 						chunkData[x,y,z] = new Block(Block.BlockType.WATER, pos, 
 						                fluid.gameObject, this);
                     // Place air blocks
-					else
+                    else
 					{
-						chunkData[x,y,z] = new Block(Block.BlockType.AIR, pos, 
-						                chunk.gameObject, this);
-					}
+                        chunkData[x, y, z] = new Block(Block.BlockType.AIR, pos,
+                                        chunk.gameObject, this);
+                        //chunkData[x, y, z] = new Block(Block.BlockType.FLOWER, pos,
+                        //                chunk.gameObject, this);
+                    }
+
 
                     // Create caves
-					if(chunkData[x,y,z].blockType != Block.BlockType.WATER && Utils.fBM3D(worldX, worldY, worldZ, 0.1f, 3) < 0.42f)
+                    if (chunkData[x,y,z].blockType != Block.BlockType.WATER && Utils.fBM3D(worldX, worldY, worldZ, 0.1f, 3) < 0.42f)
 						chunkData[x,y,z] = new Block(Block.BlockType.AIR, pos, 
 						                chunk.gameObject, this);
 
@@ -241,9 +257,17 @@ public class Chunk
 				{
 					chunkData[x,y,z].Draw();
 				}
-
-        // Prepare solid chunk mesh
-		CombineQuads(chunk.gameObject, cubeMaterial);
+        //for (int z = 0; z < World.chunkSize; z++)
+        //    for (int y = 0; y < World.chunkSize; y++)
+        //        for (int x = 0; x < World.chunkSize; x++)
+        //        {
+        //            if(chunkData[x, y, z].blockType == Block.BlockType.GRASS && chunkData[x,y+1,z].blockType == Block.BlockType.AIR)
+        //            {
+        //                BuildFlowers(chunkData[x, y + 1, z], x, y + 1, z);
+        //            }
+        //        }
+                    // Prepare solid chunk mesh
+                    CombineQuads(chunk.gameObject, cubeMaterial);
 		MeshCollider collider = chunk.gameObject.AddComponent(typeof(MeshCollider)) as MeshCollider;
 		collider.sharedMesh = chunk.transform.GetComponent<MeshFilter>().mesh;
 
@@ -295,6 +319,12 @@ public class Chunk
 			}
 		}
 	}
+    private void BuildFlowers(Block block, int x, int y, int z)
+    {
+        Vector3 position = block.position;
+        Cube cube = new Cube(Cube.CubeType.STEM,position,this.chunk,this);
+        Debug.Log(cube.cubeType.ToString() + position.ToString());
+    }
 
     /// <summary>
     /// Empty constructor.
