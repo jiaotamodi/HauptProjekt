@@ -42,6 +42,7 @@ public class Chunk
 	public Material fluidMaterial;  // Material for transparent blocks
 	public Block[,,] chunkData;     // 3D Array containing all blocks of the chunk
 	public GameObject chunk;        // GameObject that holds the mesh of the solid parts of the chunk
+    public GameObject chunkNoCollideObj; // The chunk without collisions, is linked to the chunk with collisions.
 	public GameObject fluid;        // GameObject that holds the mesh of the transparent parts, like water, of the chunk
 	public enum ChunkStatus
     {
@@ -186,7 +187,7 @@ public class Chunk
                     {
                         if (Utils.fBM3D(worldX, worldY, worldZ, 0.4f, 2) < 0.4f)
                         {
-                            chunkData[x, y, z] = new Block(Block.BlockType.DIAMOND, pos, chunk.gameObject, this);
+                            chunkData[x, y, z] = new Block(Block.BlockType.FLOWER, pos, chunk.gameObject, this);
                         }
                         else
                         {
@@ -226,12 +227,12 @@ public class Chunk
     /// </summary>
 	public void Redraw()
 	{
-		GameObject.DestroyImmediate(chunk.GetComponent<MeshFilter>());
-		GameObject.DestroyImmediate(chunk.GetComponent<MeshRenderer>());
-		GameObject.DestroyImmediate(chunk.GetComponent<Collider>());
-		GameObject.DestroyImmediate(fluid.GetComponent<MeshFilter>());
-		GameObject.DestroyImmediate(fluid.GetComponent<MeshRenderer>());
-		GameObject.DestroyImmediate(fluid.GetComponent<Collider>());
+		//GameObject.DestroyImmediate(chunk.GetComponent<MeshFilter>());
+		//GameObject.DestroyImmediate(chunk.GetComponent<MeshRenderer>());
+		//GameObject.DestroyImmediate(chunk.GetComponent<Collider>());
+		//GameObject.DestroyImmediate(fluid.GetComponent<MeshFilter>());
+		//GameObject.DestroyImmediate(fluid.GetComponent<MeshRenderer>());
+		//GameObject.DestroyImmediate(fluid.GetComponent<Collider>());
 		DrawChunk();
 	}
 
@@ -267,12 +268,12 @@ public class Chunk
         //            }
         //        }
                     // Prepare solid chunk mesh
-                    CombineQuads(chunk.gameObject, cubeMaterial);
+                    //CombineQuads(chunk.gameObject, cubeMaterial);
 		MeshCollider collider = chunk.gameObject.AddComponent(typeof(MeshCollider)) as MeshCollider;
 		collider.sharedMesh = chunk.transform.GetComponent<MeshFilter>().mesh;
 
         // Prepare transparent chunk mesh
-		CombineQuads(fluid.gameObject, fluidMaterial);
+		//CombineQuads(fluid.gameObject, fluidMaterial);
 
 		status = ChunkStatus.DONE;
 	}
@@ -342,6 +343,10 @@ public class Chunk
         // Create GameObjects holding the chunk's meshes
 		chunk = new GameObject(World.BuildChunkName(position));         // solid chunk mesh, e.g. dirt blocks
 		chunk.transform.position = position;
+        //chunkNoCollideObj = new GameObject("Chunk");
+        chunkNoCollideObj = new GameObject(World.BuildChunkName(position));
+        chunkNoCollideObj.transform.position = position;
+        chunkNoCollideObj.layer = 8;
 		fluid = new GameObject(World.BuildChunkName(position)+"_F");    // transparent chunk mesh, e.g. water blocks
 		fluid.transform.position = position;
 
