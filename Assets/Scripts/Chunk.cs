@@ -186,7 +186,7 @@ public class Chunk
                     {
                         if (Utils.fBM3D(worldX, worldY, worldZ, 0.4f, 2) < 0.4f)
                         {
-                            chunkData[x, y, z] = new Block(Block.BlockType.DIAMOND, pos, chunk.gameObject, this);
+                            chunkData[x, y, z] = new Block(Block.BlockType.FLOWER, pos, chunk.gameObject, this);
                         }
                         else
                         {

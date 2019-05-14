@@ -9,7 +9,8 @@ public class Block
 {
 	enum Cubeside {BOTTOM, TOP, LEFT, RIGHT, FRONT, BACK};
 	public enum BlockType {GRASS, DIRT, WATER, STONE, LEAVES, WOOD, WOODBASE, SAND, GOLD, BEDROCK, REDSTONE, DIAMOND, NOCRACK, 
-							CRACK1, CRACK2, CRACK3, CRACK4, AIR, FLOWER};
+							CRACK1, CRACK2, CRACK3, CRACK4, FLOWER, AIR
+	};
 
 	public BlockType blockType;
 	public bool isSolid;
@@ -19,7 +20,7 @@ public class Block
 
 	public BlockType health;
 	public int currentHealth;
-	int[] blockHealthMax = {3, 3, 10, 4, 2, 4, 4, 2, 3, -1, 4, 4, 0, 0, 0, 0, 0, 0};
+	int[] blockHealthMax = {3, 3, 10, 4, 2, 4, 4, 2, 3, -1, 4, 4, 0, 0, 0, 0, 0, 0, 0};
 
     // Hard-coded UVs based on blockuvs.txt
     Vector2[,] blockUVs = { 
@@ -92,7 +93,7 @@ public class Block
 		else
 			isSolid = true;
 
-		if(blockType == BlockType.WATER)
+		if(blockType == BlockType.WATER || blockType == BlockType.FLOWER)
 		{
 			parent = owner.fluid.gameObject;
 		}
